@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilot Wiki | Portfolio</title>
+    
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: '#2dd4bf',
+                        dark: '#050505'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased selection:bg-accent selection:text-dark">
+
+    <div id="splash-screen" class="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center transition-opacity duration-1000">
+        <div class="w-64">
+            <div class="flex justify-between text-accent font-mono text-xs mb-2">
+                <span>SYSTEM_BOOT</span>
+                <span id="splash-percent">0%</span>
+            </div>
+            <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                <div id="splash-bar" class="h-full bg-accent w-0 shadow-[0_0_15px_#2dd4bf] transition-all duration-300 ease-out"></div>
+            </div>
+            <div class="mt-4 text-slate-500 font-mono text-[10px] text-center typing-cursor">
+                INITIALIZING NEURAL LINK...
+            </div>
+        </div>
+    </div>
+    <div id="canvas-container"></div>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="#" id="brand" class="font-display font-bold text-xl tracking-widest text-white hover:text-accent transition-colors">PILOT</a>
+            
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-400">
+                <a href="#about" class="hover:text-white transition-colors hover-scramble">About</a>
+                <a href="#projects" class="hover:text-white transition-colors hover-scramble">Projects</a>
+                <a href="#contact" class="hover:text-white transition-colors hover-scramble">Contact</a>
+            </div>
+
+            <a href="#contact" class="px-6 py-2 border border-white/10 rounded-full text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+                Let's Talk
+            </a>
+        </div>
+        
+        <div class="nav-progress-container">
+            <div id="progress-bar" class="nav-progress-bar"></div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 pt-20">
+        
+        <section class="min-h-screen flex flex-col justify-center px-6 relative">
+            <div class="max-w-5xl mx-auto w-full z-10">
+                <p id="hero-greeting" class="text-accent font-mono text-sm mb-6 reveal min-h-text"></p>
+                <h1 class="text-5xl md:text-8xl font-display font-bold mb-8 leading-tight reveal min-h-text" style="transition-delay: 100ms;">
+                    <span id="hero-name" class="block text-white"></span>
+                    <span id="hero-role" class="block text-slate-500 text-3xl md:text-5xl mt-4 font-light"></span>
+                </h1>
+                <p id="hero-desc" class="text-slate-400 text-lg max-w-2xl mb-12 leading-relaxed reveal" style="transition-delay: 200ms;"></p>
+                
+                <div class="reveal" style="transition-delay: 300ms;">
+                    <a href="#projects" id="hero-cta" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-accent transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Explore <i class="fas fa-arrow-down transform -rotate-45"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16">
+                <div class="reveal">
+                    <h2 class="text-3xl font-display font-bold text-white mb-8 border-l-2 border-accent pl-4">About Me</h2>
+                    <div id="about-content" class="space-y-6 text-slate-400 text-lg leading-relaxed"></div>
+                    
+                    <div class="mt-12">
+                        <h3 class="text-sm font-mono text-accent mb-4 uppercase tracking-widest">Tech Stack</h3>
+                        <div id="skills-list" class="flex flex-wrap gap-2"></div>
+                    </div>
+                </div>
+                
+                <div id="stats-container" class="grid grid-cols-1 gap-4 reveal content-start" style="transition-delay: 200ms;"></div>
+            </div>
+        </section>
+
+        <section id="projects" class="py-32 px-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-display font-bold text-white mb-16 reveal">Selected Works</h2>
+                
+                <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+                
+                <div id="view-more-container" class="text-center mt-16 hidden">
+                    <button id="view-more-btn" class="px-8 py-3 border border-white/20 rounded-full text-sm text-slate-300 hover:border-accent hover:text-white transition-all">
+                        View More Projects
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-32 px-6">
+            <div class="max-w-4xl mx-auto text-center reveal">
+                <p class="text-accent font-mono mb-4">INITIATE UPLINK</p>
+                <h2 class="text-5xl md:text-7xl font-display font-bold text-white mb-10">Let's build something.</h2>
+                <a id="email-link" href="" class="inline-block text-2xl md:text-4xl text-slate-400 hover:text-white underline decoration-accent underline-offset-8 transition-colors"></a>
+                
+                <div id="social-links" class="flex justify-center gap-10 mt-16"></div>
+            </div>
+            
+            <footer class="mt-32 text-center text-slate-700 text-xs font-mono uppercase tracking-widest">
+                &copy; 2025 Pilot Wiki. System Nominal.
+            </footer>
+        </section>
+
+    </main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="config.js" defer></script>
+    <script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+
+/* Base Setup */
+body {
+    background-color: #050505;
+    color: #e2e8f0;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    cursor: crosshair;
+}
+
+h1, h2, h3, .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+/* 3D Canvas */
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at center, transparent 0%, #050505 95%);
+}
+
+/* Navbar Progress Bar (Attached to bottom of Nav) */
+.nav-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #2dd4bf; /* Teal Accent */
+    box-shadow: 0 0 10px #2dd4bf;
+    transition: width 0.1s linear;
+}
+
+/* Glassmorphism */
+.glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-nav {
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Project Card: B&W to Color */
+.project-card {
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s;
+}
+
+.project-image-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.project-img {
+    filter: grayscale(100%) contrast(1.1);
+    transition: filter 0.5s ease, transform 0.7s ease;
+    mix-blend-mode: luminosity; /* Helps blend with dark theme */
+}
+
+/* Hover State */
+.project-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(45, 212, 191, 0.3);
+}
+
+.project-card:hover .project-img {
+    filter: grayscale(0%) contrast(1);
+    mix-blend-mode: normal;
+    transform: scale(1.05);
+}
+
+/* Scramble Text Effect Hover for Links */
+.hover-scramble {
+    position: relative;
+    overflow: hidden;
+}
+.hover-scramble::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #2dd4bf;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.hover-scramble:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Utility Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* ... Keep all your previous CSS ... */
+
+/* [NEW] Terminal Cursor Effect */
+.typing-cursor::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    color: #2dd4bf; /* Accent color */
+    margin-left: 4px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Ensure height doesn't collapse while typing */
+.min-h-text {
+    min-height: 1.5em; 
+}
+
+/* [NEW] Splash Screen Utilities */
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Ensure the splash screen sits above everything */
+#splash-screen {
+    background-color: #050505; /* Matches body bg */
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* DISABLE SNAP */
+body {
+  scroll-snap-type: none !important;
+}
+
+section {
+  scroll-snap-align: none !important;
+}
+/* Add to style.css */
+#hero-desc {
+    min-height: 4.5em; /* Reserves space for roughly 3 lines of text */
+    display: block;
+}
+.project-image-wrapper {
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 16 / 9;  /* Forces a fixed shape so layout doesn't jump */
+    background-color: #1a1a1a; /* Placeholder color while loading */
+}
