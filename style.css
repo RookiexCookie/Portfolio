@@ -1,170 +1,452 @@
+/* =========================================
+   1. THEME VARIABLES & SETUP
+   ========================================= */
+   html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-/* Base Setup */
+:root {
+    /* DEFAULT: SCI-FI DARK (Teal/Cyan) */
+    --bg-dark: #050505;
+    --bg-panel: #0a0a0a;
+    --text-main: #cbd5e1;
+    --text-header: #ffffff;
+    --accent: #2dd4bf;
+    --accent-rgb: 45, 212, 191;
+    --accent-glow: rgba(45, 212, 191, 0.5);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --dock-bg: rgba(20, 20, 20, 0.4);
+}
+
+/* --- THEMES --- */
+[data-theme="rose-pine"] { --bg-dark: #232136; --bg-panel: #2a273f; --text-main: #e0def4; --text-header: #ffffff; --accent: #ea9a97; --accent-rgb: 234, 154, 151; --accent-glow: rgba(234, 154, 151, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(42, 39, 63, 0.5); --dock-bg: rgba(35, 33, 54, 0.6); }
+[data-theme="gruvbox"] { --bg-dark: #282828; --bg-panel: #32302f; --text-main: #ebdbb2; --text-header: #fbf1c7; --accent: #fe8019; --accent-rgb: 254, 128, 25; --accent-glow: rgba(254, 128, 25, 0.4); --glass-border: rgba(235, 219, 178, 0.1); --glass-bg: rgba(50, 48, 47, 0.5); --dock-bg: rgba(40, 40, 40, 0.6); }
+[data-theme="dracula"] { --bg-dark: #282a36; --bg-panel: #343746; --text-main: #f8f8f2; --text-header: #ffffff; --accent: #bd93f9; --accent-rgb: 189, 147, 249; --accent-glow: rgba(189, 147, 249, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(52, 55, 70, 0.5); --dock-bg: rgba(40, 42, 54, 0.6); }
+[data-theme="nord"] { --bg-dark: #2e3440; --bg-panel: #3b4252; --text-main: #d8dee9; --text-header: #eceff4; --accent: #88c0d0; --accent-rgb: 136, 192, 208; --accent-glow: rgba(136, 192, 208, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(59, 66, 82, 0.5); --dock-bg: rgba(46, 52, 64, 0.6); }
+[data-theme="one-dark"] { --bg-dark: #282c34; --bg-panel: #353b45; --text-main: #abb2bf; --text-header: #ffffff; --accent: #61afef; --accent-rgb: 97, 175, 239; --accent-glow: rgba(97, 175, 239, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(53, 59, 69, 0.5); --dock-bg: rgba(40, 44, 52, 0.6); }
+[data-theme="catppuccin"] { --bg-dark: #1e1e2e; --bg-panel: #313244; --text-main: #cdd6f4; --text-header: #f5e0dc; --accent: #f5a97f; --accent-rgb: 245, 169, 127; --accent-glow: rgba(245, 169, 127, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(49, 50, 68, 0.5); --dock-bg: rgba(30, 30, 46, 0.6); }
+[data-theme="tokyo-night"] { --bg-dark: #1a1b26; --bg-panel: #24283b; --text-main: #c0caf5; --text-header: #ffffff; --accent: #7aa2f7; --accent-rgb: 122, 162, 247; --accent-glow: rgba(122, 162, 247, 0.4); --glass-border: rgba(255, 255, 255, 0.1); --glass-bg: rgba(36, 40, 59, 0.5); --dock-bg: rgba(26, 27, 38, 0.6); }
+
+/* Base Transition */
 body {
-    background-color: #050505;
-    color: #e2e8f0;
-    overflow-x: hidden;
-    font-family: 'Inter', sans-serif;
-    cursor: crosshair;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s ease;
+    will-change: background-color;
 }
 
-h1, h2, h3, .font-display {
-    font-family: 'Space Grotesk', sans-serif;
+h1, h2, h3, h4, .font-display {
+    color: var(--text-header);
+    transition: color 0.5s ease;
 }
 
-/* 3D Canvas */
-#canvas-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: radial-gradient(circle at center, transparent 0%, #050505 95%);
+/* =========================================
+   2. ANIMATION & BRANDING
+   ========================================= */
+/* =========================================
+   LOGO ANIMATION (SelfMadeSystem)
+   ========================================= */
+/* Container for the loader */
+.loader {
+    display: flex;
+    margin: 0.25em 0;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Navbar Progress Bar (Attached to bottom of Nav) */
-.nav-progress-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.05);
+/* The Line Animation Logic */
+.dash {
+    /* "360" is the magic number matching the pathLength in HTML */
+    animation: dashArray 2s ease-in-out infinite,
+               dashOffset 2s linear infinite;
+    stroke-linecap: round; /* Makes the text ends rounded and smoother */
 }
 
-.nav-progress-bar {
-    height: 100%;
-    width: 0%;
-    background: #2dd4bf; /* Teal Accent */
-    box-shadow: 0 0 10px #2dd4bf;
-    transition: width 0.1s linear;
+/* Optional: If you want the text to spin (Not recommended for readability, but here if needed) */
+.spin {
+    animation: spinDashArray 2s ease-in-out infinite,
+               spin 8s ease-in-out infinite,
+               dashOffset 2s linear infinite;
+    transform-origin: center;
 }
 
-/* Glassmorphism */
-.glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+/* --- KEYFRAMES --- */
+@keyframes dashArray {
+    0% { stroke-dasharray: 0 1 359 0; }
+    50% { stroke-dasharray: 0 359 1 0; }
+    100% { stroke-dasharray: 359 1 0 0; }
 }
 
-.glass-nav {
-    background: rgba(5, 5, 5, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+@keyframes spinDashArray {
+    0% { stroke-dasharray: 270 90; }
+    50% { stroke-dasharray: 0 360; }
+    100% { stroke-dasharray: 270 90; }
 }
 
-/* Project Card: B&W to Color */
+@keyframes dashOffset {
+    0% { stroke-dashoffset: 365; }
+    100% { stroke-dashoffset: 5; }
+}
+
+@keyframes spin {
+    0% { rotate: 0deg; }
+    12.5%, 25% { rotate: 270deg; }
+    37.5%, 50% { rotate: 540deg; }
+    62.5%, 75% { rotate: 810deg; }
+    87.5%, 100% { rotate: 1080deg; }
+}
+
+/* =========================================
+   3. GLASSMORPHISM (OPTIMIZED)
+   ========================================= */
+/* Reduced blur amounts for performance (from 20-30px down to 8-12px) */
+.glass, .project-card, .profile-card, #dock {
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+}
+
+.switch .slider, .glass-button, #view-more-btn {
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+}
+
+/* =========================================
+   4. UI COMPONENTS
+   ========================================= */
+/* --- SWITCH --- */
+.switch { font-size: 17px; position: relative; display: inline-block; width: 3.5em; height: 2em; cursor: pointer; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); transition: 0.5s; border-radius: 30px; }
+.slider:before { position: absolute; content: ""; height: 1.4em; width: 1.4em; border-radius: 50%; left: 8%; bottom: 12%; background: #fff; transition: 0.5s; }
+input:checked + .slider { background: rgba(var(--accent-rgb), 0.15); border-color: rgba(var(--accent-rgb), 0.4); }
+input:checked + .slider:before { left: calc(100% - 1.4em - 8%); background: var(--accent); }
+.decoration { position: absolute; height: 3px; width: 3px; border-radius: 50%; right: 15%; top: 20%; background: var(--accent); opacity: 0.6; transition: 0.5s; }
+input:checked ~ .decoration { opacity: 1; box-shadow: 0 0 10px var(--accent); }
+input:active + .slider:before { transform: scale(0.9); }
+
+/* --- DOCK --- */
+#dock {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    gap: 10px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.dock-item {
+    background: rgba(255, 255, 255, 0.04) !important;
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.dock-item:hover {
+    background: rgba(var(--accent-rgb), 0.2) !important;
+    border-color: rgba(var(--accent-rgb), 0.5) !important;
+}
+.dock-item span::after {
+    content: ''; position: absolute; top: 100%; left: 50%; margin-left: -4px;
+    border-width: 4px; border-style: solid; border-color: rgba(0,0,0,0.8) transparent transparent transparent;
+}
+
+/* --- PROJECT CARDS --- */
 .project-card {
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.3s;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.project-image-wrapper {
-    overflow: hidden;
-    position: relative;
-}
-
-.project-img {
-    filter: grayscale(100%) contrast(1.1);
-    transition: filter 0.5s ease, transform 0.7s ease;
-    mix-blend-mode: luminosity; /* Helps blend with dark theme */
-}
-
-/* Hover State */
 .project-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(45, 212, 191, 0.3);
+    border-color: rgba(var(--accent-rgb), 0.4);
+    box-shadow: 0 10px 30px -10px var(--accent-glow);
 }
 
-.project-card:hover .project-img {
-    filter: grayscale(0%) contrast(1);
-    mix-blend-mode: normal;
-    transform: scale(1.05);
+/* --- BUTTONS --- */
+.glass-button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.glass-button:hover {
+    border-color: rgba(var(--accent-rgb), 0.5);
+    color: var(--accent);
 }
 
-/* Scramble Text Effect Hover for Links */
-.hover-scramble {
+/* --- PROFILE CARD --- */
+.profile-card {
+    width: 280px; height: 280px;
+    background: rgba(var(--accent-rgb), 0.08);
+    border-radius: 32px; padding: 3px;
     position: relative;
-    overflow: hidden;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s ease;
+    cursor: pointer; margin: 0 auto;
 }
-.hover-scramble::after {
-    content: '';
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+.profile-card .card-profile-pic {
+    position: absolute; width: calc(100% - 6px); height: calc(100% - 6px);
+    top: 3px; left: 3px; border-radius: 29px; border: 2px solid rgba(var(--accent-rgb), 0.3);
+    overflow: hidden; transition: 0.5s;
+    background: rgba(255,255,255,0.05);
+}
+.profile-card .card-profile-pic img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+.profile-card:hover .card-profile-pic { width: 100px; height: 100px; top: 10px; left: 10px; border-radius: 50%; border-color: var(--accent); z-index: 5; }
+.profile-card .card-bottom {
+    position: absolute; bottom: 3px; left: 3px; right: 3px;
+    background: rgba(var(--accent-rgb), 0.15);
+    top: 80%; border-radius: 29px; overflow: hidden; transition: 0.5s;
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+}
+.p
+
+/* =========================================
+   5. SECTIONS & LAYOUT (STATS / SKILLS)
+   ========================================= */
+/* Specific glassmorphism for stats and skills maintained from original */
+#stats-container .glass {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+}
+#stats-container .glass:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(var(--accent-rgb), 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+}
+
+#skills-list span {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+}
+#skills-list span:hover {
+    background: rgba(var(--accent-rgb), 0.15) !important;
+    border-color: rgba(var(--accent-rgb), 0.4) !important;
+    transform: translateY(-2px);
+}
+
+#view-more-btn {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+}
+#view-more-btn:hover {
+    background: rgba(var(--accent-rgb), 0.15);
+    border-color: rgba(var(--accent-rgb), 0.5);
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   6. UTILITIES
+   ========================================= */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+::selection { background: var(--accent); color: var(--bg-dark); }
+.typing-cursor::after { content: '_'; animation: blink 1s step-end infinite; color: var(--accent); }
+@keyframes blink { 50% { opacity: 0; } }
+.animate-up, .stagger-text .letter { opacity: 0; }
+.theme-accent { color: var(--accent) !important; }
+.theme-accent-border { border-color: rgba(var(--accent-rgb), 0.18) !important; }
+/* =========================================
+   NEW CONTACT CARD (Clean Layout)
+   ========================================= */
+.card {
+    width: 300px;
+    height: 300px;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 32px;
+    padding: 3px;
+    position: relative;
+    box-shadow: 0px 40px 80px -20px rgba(0,0,0,0.5);
+    transition: all 0.5s ease-in-out;
+}
+
+/* Mail styles removed */
+
+/* Profile Pic */
+.card .profile-pic {
+    position: absolute;
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
+    top: 3px;
+    left: 3px;
+    border-radius: 29px;
+    z-index: 1; 
+    border: 0px solid var(--accent);
+    overflow: hidden;
+    transition: all 0.5s ease-in-out 0.2s, z-index 0.5s ease-in-out 0.2s;
+    background: var(--bg-dark); 
+}
+
+.card .profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease-in-out 0s;
+    opacity: 0.8; 
+}
+
+/* Bottom Panel */
+.card .bottom {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    right: 3px;
+    background: rgba(var(--accent-rgb), 0.2); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    
+    /* Increased height: Changed from 80% to 75% so the bar is taller */
+    top: 75%; 
+    
+    border-radius: 29px;
+    z-index: 2;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+}
+
+.card .bottom .content {
     position: absolute;
     bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: #2dd4bf;
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-.hover-scramble:hover::after {
-    transform: scaleX(1);
-    transform-origin: left;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 2rem;
 }
 
-/* Utility Animations */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-}
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-/* ... Keep all your previous CSS ... */
-
-/* [NEW] Terminal Cursor Effect */
-.typing-cursor::after {
-    content: '_';
-    animation: blink 1s step-end infinite;
-    color: #2dd4bf; /* Accent color */
-    margin-left: 4px;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-/* Ensure height doesn't collapse while typing */
-.min-h-text {
-    min-height: 1.5em; 
-}
-
-/* [NEW] Splash Screen Utilities */
-.fade-out {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* Ensure the splash screen sits above everything */
-#splash-screen {
-    background-color: #050505; /* Matches body bg */
-}
-html {
-  scroll-behavior: smooth;
-}
-
-/* DISABLE SNAP */
-body {
-  scroll-snap-type: none !important;
-}
-
-section {
-  scroll-snap-align: none !important;
-}
-/* Add to style.css */
-#hero-desc {
-    min-height: 4.5em; /* Reserves space for roughly 3 lines of text */
+.card .bottom .content .name {
     display: block;
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
-.project-image-wrapper {
-    overflow: hidden;
-    position: relative;
-    aspect-ratio: 16 / 9;  /* Forces a fixed shape so layout doesn't jump */
-    background-color: #1a1a1a; /* Placeholder color while loading */
+
+.card .bottom .content .about-me {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.4;
+}
+
+.card .bottom .bottom-bottom {
+    position: absolute;
+    bottom: 1rem; /* Adjusted for centering */
+    left: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+}
+
+.card .bottom .bottom-bottom .social-links-container {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.card .bottom .bottom-bottom .social-links-container i {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.8);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card .bottom .bottom-bottom .social-links-container i:hover {
+    color: white;
+    transform: scale(1.2);
+}
+
+.card .bottom .bottom-bottom .button {
+    background: var(--text-header);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.card .bottom .bottom-bottom .button:hover {
+    background: var(--do);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* --- CARD HOVER STATE --- */
+.card:hover {
+    border-top-left-radius: 55px;
+}
+
+.card:hover .bottom {
+    top: 20%; 
+    border-radius: 80px 29px 29px 29px;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+    background: rgba(var(--accent-rgb), 0.3);
+}
+
+.card:hover .profile-pic {
+    width: 100px;
+    height: 100px;
+    aspect-ratio: 1;
+    top: 10px;
+    left: 10px;
+    border-radius: 50%;
+    z-index: 10;
+    border: 3px solid rgba(255,255,255,0.5);
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+    transition: all 0.5s ease-in-out, z-index 0.5s ease-in-out 0.1s;
+}
+
+.card:hover .profile-pic img {
+    transform: scale(1.1);
+    opacity: 1;
+}
+.card:hover .profile-pic {
+  width: 100px;
+  height: 100px;
+  aspect-ratio: 1;
+  top: 10px;
+  left: 10px;
+  border-radius: 50%;
+  z-index: 3;
+  box-shadow: rgba(96, 75, 74, 0.1882352941) 0px 5px 5px 0px;
+  transition: all 0.5s ease-in-out, z-index 0.5s ease-in-out 0.1s;
+}
+
+.card:hover .profile-pic:hover {
+  transform: scale(1.3);
+  border-radius: 0px;
+}
+
+.card:hover .profile-pic img {
+  transform: scale(2.5);
+  -o-object-position: 0px 25px;
+  object-position: 0px 25px;
+  transition: all 0.5s ease-in-out 0.5s;
+}
+
+.card:hover .profile-pic svg {
+  transform: scale(2.5);
+  transition: all 0.5s ease-in-out 0.5s;
 }

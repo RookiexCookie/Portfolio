@@ -6,8 +6,8 @@ const CONFIG = {
     hero: {
         greeting: "Welcome, I am",
         name: "K Harish",
-        role: "Aspiring Engineer",
-        description: "Building the bridge between complex backend logic and immersive frontend experiences. Focused on performance, scalability, and minimalist design.",
+        role: "> PROTOCOL_3: { Protect the Code}",
+        description: "",
         ctaText: "Explore Work"
     },
 
@@ -67,9 +67,9 @@ const CONFIG = {
 
     // Contact Section
     contact: {
-        email: "kormaharish52@gmail.com.com",
+        email: "kormaharish52@gmail.com",
         socials: [
-            { name: "GitHub", icon: "fab fa-github", url: "https://github.com" },
+            { name: "GitHub", icon: "fab fa-github", url: "https://github.com/RookiexCookie" },
             { name: "LinkedIn", icon: "fab fa-linkedin", url: "https://www.linkedin.com/in/k-harish1234" },
         ]
     }
